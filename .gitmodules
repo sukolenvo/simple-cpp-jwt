@@ -1,0 +1,6 @@
+[submodule "vendor/CLI11"]
+	path = vendor/CLI11
+	url = git@github.com:CLIUtils/CLI11.git
+[submodule "vendor/simple-cpp-base64"]
+	path = vendor/simple-cpp-base64
+	url = git@github.com:sukolenvo/simple-cpp-base64.git

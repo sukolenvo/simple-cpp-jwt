@@ -1,11 +1,11 @@
-name: ci
+name: MacOS
 on:
-  pull_request:
   release:
     types: [published]
   push:
-    tags:
-    branches:
+    paths-ignore:
+      - '.github/workflows/linux.yml'
+      - '.github/workflows/windows.yml'
 
 jobs:
   lint:
@@ -16,22 +16,23 @@ jobs:
         run: make clang-format-check
   test:
     needs: lint
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-12
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-22.04
-          - macos-12
         build-type:
           - Debug
           - Release
+
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
       - name: Configure CMake
-        run: cmake -S . -B ./build -DCMAKE_BUILD_TYPE:STRING=${{matrix.build-type}}
+        run: >
+          cmake -S . -B ./build
+          -DCMAKE_BUILD_TYPE:STRING=${{matrix.build-type}}
+          -DSIMPLE_CPP_JWT_WARNINGS_AS_ERRORS:BOOL=ON
         env:
           CC: gcc-12
           CXX: g++-12
